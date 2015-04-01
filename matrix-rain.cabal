@@ -1,0 +1,41 @@
+Name:                     matrix-rain
+Version:                  0.0.1
+Cabal-version:            >= 1.18
+Synopsis:                 Matrix rain animation
+Description:              Matrix rain animation
+Homepage:                 https://github.com/cmahon/matrix-rain
+Package-url:              https://github.com/cmahon/matrix-rain
+Bug-reports:              https://github.com/cmahon/matrix-rain/issues
+Author:                   Chris Mahon
+Maintainer:               cnmahon@gmail.com
+Category:                 Graphics
+Build-type:               Simple
+Stability:                Experimental
+Tested-with:              GHC == 7.8.3
+Data-files:               glyphs.png
+                          vertShader.glsl
+                          fragShader.glsl
+Data-dir:                 data
+
+Executable matrix-rain
+  main-is:                Main.hs
+  hs-source-dirs:         executable
+  ghc-options:            -Wall -O2 -threaded -rtsopts
+  default-language:       Haskell2010
+  build-depends:          base,
+                          data-default,
+                          either,
+                          GLFW-b,
+                          gl,
+                          lens,
+                          linear,
+                          JuicyPixels,
+                          lowgl,
+                          monad-loops,
+                          mtl,
+                          random,
+                          transformers,
+                          vector
+
+  
+
