@@ -6,21 +6,14 @@
 
 module Matrix where
 
-import           Control.Applicative
-import           Control.Lens
+import           Control.Lens hiding (indices)
 import           Control.Monad
 import           Control.Monad.IO.Class
 import           Control.Monad.Reader
 import           Control.Monad.State
-import           Control.Monad.Trans.Class
-import           Control.Monad.Trans.Reader (ReaderT)
-import           Control.Monad.Trans.State (StateT)
-import           Data.Default
 import           Data.Monoid
-import           Data.Tuple
 import qualified Data.Vector as V
 import qualified Data.Vector.Storable as VS
-import           Data.Word
 import           Graphics.GL.Low
 import           Linear
 import           System.Random
@@ -28,7 +21,6 @@ import           System.Random
 import           Grid
 import           Mesh
 import           Types
-import           Util
 
 -----------------------------------------------------------------------------
 
@@ -95,15 +87,13 @@ update = do
     when (_mcrOffset < 0) $ do
       msCursor . mcrOffset .= 1
       if _mcrDrawing
-        then do 
-          (msCells . ix (_mcrPos-1)) %= (mclState .~ _mcrState) . 
-                                    (mclGlyph .~ _mcrGlyph)
-        else do
-          (msCells . ix (_mcrPos-1)) %= (mclState .~ Empty) .
-                                    (mclGlyph .~ 0)
+        then (msCells . ix (_mcrPos-1)) %= (mclState .~ _mcrState) . 
+                                           (mclGlyph .~ _mcrGlyph)
+        else (msCells . ix (_mcrPos-1)) %= (mclState .~ Empty) .
+                                           (mclGlyph .~ 0)
       cp <- msCursor . mcrPos <+= 1
       when (cp > _mcfNumCells) $ do
-        cd <- use (msCursor . mcrDrawing)
+        -- cd <- use (msCursor . mcrDrawing)
         (msCursor . mcrDrawing) %= not
         (msCursor . mcrPos) .= 1
   when (mod f _mcfFramesLiveChange == 0) $ do
@@ -135,11 +125,12 @@ updateCell :: (Functor m, Monad m) =>
 updateCell cell@MatrixCell{..} = do
   mpcell <- get
   cell' <- case _mclState of 
-    Live l ->    do glyph <- case mpcell of 
-                      Nothing -> lift rndGlyph
-                      Just pcell -> return (pcell ^. mclGlyph)
-                    return $ cell & mclGlyph .~ glyph
-    otherwise -> return cell
+    Live _ -> do
+      glyph <- case mpcell of 
+        Nothing -> lift rndGlyph
+        Just pcell -> return (pcell ^. mclGlyph)
+      return $ cell & mclGlyph .~ glyph
+    _ -> return cell
   put $ Just cell
   return cell'
 

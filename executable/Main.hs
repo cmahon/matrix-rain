@@ -13,22 +13,13 @@ import           Control.Monad.IO.Class
 import           Control.Monad.Loops       (whileM_)
 import           Control.Monad.Reader
 import           Control.Monad.State
-import           Control.Monad.Trans.Class
-import           Control.Monad.Trans.Reader (ReaderT)
-import           Control.Monad.Trans.State (StateT)
 import           Data.Default
 import           Data.Either.Combinators   (fromRight')
-import           Data.Functor              ((<$>))
-import           Data.Monoid
 import qualified Data.Vector               as V
-import           Data.Word
 import           Graphics.GL.Low
 import qualified Graphics.UI.GLFW          as GLFW
-import           Linear
-import           System.Random
 
 import           Matrix
-import           Mesh
 import           Types
 import           Util
 

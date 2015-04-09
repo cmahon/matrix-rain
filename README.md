@@ -19,6 +19,8 @@ To do:
 * Time-based frame rate 
 * Resize screen
 * Automatically adjust cell size 
+* Fix space leak
+
 
 
 
